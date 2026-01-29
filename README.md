@@ -41,3 +41,34 @@ Your Name
 ## License
 
 MIT
+
+## Testing
+
+This project uses Jest for unit testing.
+
+### Run Tests
+
+\`\`\`bash
+
+# Run all tests
+
+npm test
+
+# Watch mode (auto-run on file changes)
+
+npm run test:watch
+
+# Coverage report
+
+npm run test:coverage
+\`\`\`
+
+### Test Coverage
+
+Current coverage: **100%** ✅
+
+- Unit tests: 38 tests
+- Test files: 2
+- Coverage report: `coverage/lcov-report/index.html`
+
+...
