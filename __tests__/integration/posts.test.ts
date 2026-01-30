@@ -4,25 +4,29 @@ import app from '../../src/app.js';
 /**
  * Integration Tests for Posts API
  * 
- * Note: These tests require a running PostgreSQL database.
- * Database connection must be configured in .env.test
+ * These tests require a running PostgreSQL database.
+ * Database connection is configured in .env.test
  * 
  * To run integration tests:
  * 1. Ensure PostgreSQL is running on localhost:5432
- * 2. Create test database: blog_api_test
+ * 2. Ensure blog_test database exists
  * 3. Run: npm run test:integration
  */
 
-const isDatabaseAvailable = process.env.DATABASE_URL?.includes('blog_api_test');
-
-// Conditionally run tests
-const testSuite = isDatabaseAvailable ? describe : describe.skip;
-
-testSuite('Posts API Integration Tests', () => {
+describe('Posts API Integration Tests', () => {
   let authToken: string;
   let userId: string;
 
   beforeAll(async () => {
+    // Verify database is available
+    const dbUrl = process.env.DATABASE_URL;
+    if (!dbUrl || !dbUrl.includes('blog_test')) {
+      throw new Error(
+        'Integration tests require blog_test database. ' +
+        'Current DATABASE_URL: ' + (dbUrl || 'not set')
+      );
+    }
+    console.log('✓ Database connection verified: blog_test');
     // Database connection setup
   });
 
