@@ -28,15 +28,17 @@ export const validatePassword = (password: any): boolean => {
 
 // Dizenin bos veya bosluk içerdiğini kontrol eder
 export const isEmpty = (str: any): boolean => {
-
+    // Null veya undefined kontrolü
     if(str === null || str === undefined) {
         return true  
     }
 
+    // String olmayan değerler boş kabul edilir
     if(typeof str !== "string") {
         return true  
     }
 
+    // String ise boşluk kontrol et
     return str.trim().length === 0;
 }
 

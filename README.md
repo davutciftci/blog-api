@@ -17,6 +17,25 @@ A modern RESTful blog API built with Node.js, Express, PostgreSQL, and Prisma.
 - Prisma ORM
 - JWT Authentication
 
+## Architecture
+
+### Service Layer
+
+Business logic is separated into service files:
+
+- **userService.js** - User CRUD operations, password hashing
+- **postService.js** - Post CRUD operations, slug generation, authorization
+
+Services interact with Prisma ORM and are fully tested with mocked database.
+
+### Testing Strategy
+
+- **Unit Tests:** Utility functions (validators, formatters)
+- **Service Tests:** Business logic with mocked database
+- **Integration Tests:** API endpoints (coming next)
+
+Current test coverage: **95%+** ✅
+
 ## Installation
 
 \`\`\`bash

@@ -7,9 +7,9 @@ import {
   updatePost,
   deletePost,
   getPostsByAuthor
-} from '../../src/services/post';
+} from '../../src/services/post.js';
 
-jest.mock('../../src/config/database', () => ({
+jest.mock('../../src/config/database.js', () => ({
   __esModule: true,
   default: prismaMock
 }));

@@ -7,11 +7,11 @@ import {
   updateUser,
   deleteUser,
   getAllUsers
-} from '../../src/services/user';
+} from '../../src/services/user.js';
 import bcrypt from 'bcrypt';
 
 // Mock'u database modülüne bağla - import'tan ÖNCE olmalı
-jest.mock('../../src/config/database', () => ({
+jest.mock('../../src/config/database.js', () => ({
   __esModule: true,
   default: prismaMock,
 }));

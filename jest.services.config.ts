@@ -4,27 +4,21 @@ export default {
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-    '!src/server.ts',
-    '!src/generated/**/*'
+    'src/services/**/*.ts',
+    '!src/**/*.d.ts'
   ],
   testMatch: [
-    '**/__tests__/**/*.test.ts'
-  ],
-  testPathIgnorePatterns: [
-    '__tests__/integration/',
-    '__tests__/services/',
-    '__tests__/controllers/',
-    '__tests__/middlewares/'
+    '**/__tests__/services/**/*.test.ts'
   ],
   setupFilesAfterEnv: ['<rootDir>/__tests__/setup/prisma-mock.ts'],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { useESM: true }]
+    '^.+\\.tsx?$': ['ts-jest', { useESM: true, isolatedModules: true }]
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   testTimeout: 30000,
-  verbose: true
+  verbose: true,
+  maxWorkers: 1,
+  bail: 1
 };
