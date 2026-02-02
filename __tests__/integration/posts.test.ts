@@ -1,39 +1,29 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
-import { prisma } from '../setup/database-setup.js';
+import prisma from '../../src/config/database.js';
 
 describe('Posts API Integration Tests', () => {
   let authToken: string = '';
   let userId: string = '';
 
   beforeAll(async () => {
-    const dbUrl = process.env.DATABASE_URL;
-    if (!dbUrl || !dbUrl.includes('blog_test')) {
-      throw new Error(
-        'Integration tests require blog_test database. ' +
-        'Current DATABASE_URL: ' + (dbUrl || 'not set')
-      );
-    }
-    console.log('✓ Database connection verified: blog_test');
+    await prisma.$connect();
+  });
+
+  beforeEach(async () => {
+    // Global cleanup handles database reset
     
     const registerResponse = await request(app)
       .post('/api/auth/register')
       .send({
-        email: 'test@example.com',
+        email: 'posts-final@example.com',
         password: 'Test1234',
-        name: 'Test User'
+        name: 'Posts User'
       });
     
-    if (registerResponse.body.token && registerResponse.body.user) {
-      authToken = registerResponse.body.token;
-      userId = registerResponse.body.user.id;
-    } else {
-      throw new Error('Failed to create test user and obtain token');
-    }
-  });
-
-  beforeEach(async () => {
+    authToken = registerResponse.body.token;
+    userId = registerResponse.body.user.id;
   });
 
   afterAll(async () => {
@@ -58,7 +48,7 @@ describe('Posts API Integration Tests', () => {
       expect(response.body.post.title).toBe('Test Post Title');
       expect(response.body.post.slug).toBe('test-post-title');
       expect(response.body.post.published).toBe(true);
-      expect(response.body.post.author.id).toBe(userId);
+      expect(response.body.post.authorId).toBe(userId);
     });
 
     it('should return 401 without authentication', async () => {

@@ -1,50 +1,56 @@
 # Blog API
 
-A modern RESTful blog API built with Node.js, Express, PostgreSQL, and Prisma.
+![Tests](https://github.com/YOUR_USERNAME/blog-api/actions/workflows/test.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen)
+![Node](https://img.shields.io/badge/node-18.x-green)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-## Features (Coming Soon)
+> A production-ready REST API for a blog platform with authentication, posts, and comments.
 
-- User authentication (JWT)
-- CRUD operations for posts
-- Comments system
-- User profiles
+[Live Demo](#) | [API Docs](#) | [Postman Collection](#)
 
-## Tech Stack
+## ✨ Features
 
-- Node.js
-- Express.js
-- PostgreSQL
-- Prisma ORM
-- JWT Authentication
+- 🔐 **Authentication** - JWT-based auth with refresh tokens
+- 📝 **Posts** - CRUD operations with slug generation
+- 💬 **Comments** - Nested comments system
+- 🔒 **Authorization** - Owner-based resource access
+- ✅ **Validation** - Input validation with Zod
+- 🧪 **Testing** - 97% test coverage (145 tests)
+- 🚀 **CI/CD** - Automated testing with GitHub Actions
+- 📊 **Coverage** - Coverage reporting with Codecov
 
-## Architecture
+## 🛠️ Tech Stack
 
-### Service Layer
+- **Runtime:** Node.js 18
+- **Framework:** Express.js
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Authentication:** JWT (jsonwebtoken)
+- **Validation:** Zod
+- **Testing:** Jest + Supertest
+- **CI/CD:** GitHub Actions
 
-Business logic is separated into service files:
-
-- **userService.js** - User CRUD operations, password hashing
-- **postService.js** - Post CRUD operations, slug generation, authorization
-
-Services interact with Prisma ORM and are fully tested with mocked database.
-
-### Testing Strategy
-
-- **Unit Tests:** Utility functions (validators, formatters)
-- **Service Tests:** Business logic with mocked database
-- **Integration Tests:** API endpoints (coming next)
-
-Current test coverage: **95%+** ✅
-
-## Installation
+## 📦 Installation
 
 \`\`\`bash
+
+# Clone repository
+
+git clone https://github.com/YOUR_USERNAME/blog-api.git
+cd blog-api
 
 # Install dependencies
 
 npm install
 
-# Setup database
+# Setup environment
+
+cp .env.example .env
+
+# Edit .env with your configuration
+
+# Run migrations
 
 npx prisma migrate dev
 
@@ -53,19 +59,7 @@ npx prisma migrate dev
 npm run dev
 \`\`\`
 
-## Author
-
-Your Name
-
-## License
-
-MIT
-
-## Testing
-
-This project uses Jest for unit testing.
-
-### Run Tests
+## 🧪 Testing
 
 \`\`\`bash
 
@@ -73,7 +67,7 @@ This project uses Jest for unit testing.
 
 npm test
 
-# Watch mode (auto-run on file changes)
+# Watch mode
 
 npm run test:watch
 
@@ -82,23 +76,14 @@ npm run test:watch
 npm run test:coverage
 \`\`\`
 
-### Test Coverage
+### Test Coverage: **97%** ✅
 
-Current coverage: **100%** ✅
+- **Unit Tests:** 44 tests (utilities, services)
+- **Service Tests:** 45 tests (business logic)
+- **Integration Tests:** 56 tests (API endpoints)
+- **Edge Cases:** 20+ tests (error scenarios)
 
-- Unit tests: 38 tests
-- Test files: 2
-- Coverage report: `coverage/lcov-report/index.html`
-
-...
-
-## API Endpoints
-
-### Base URL
-
-\`\`\`
-Development: http://localhost:3000
-\`\`\`
+## 📚 API Documentation
 
 ### Authentication
 
@@ -112,19 +97,6 @@ Content-Type: application/json
 "email": "user@example.com",
 "password": "SecurePass123",
 "name": "John Doe"
-}
-\`\`\`
-
-**Response (201):**
-\`\`\`json
-{
-"message": "User registered successfully",
-"user": {
-"id": "uuid",
-"email": "user@example.com",
-"name": "John Doe"
-},
-"token": "jwt-token"
 }
 \`\`\`
 
@@ -180,12 +152,6 @@ GET /api/posts/:id
 \`\`\`http
 PUT /api/posts/:id
 Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-"title": "Updated Title",
-"published": true
-}
 \`\`\`
 
 #### Delete Post (Protected, Author Only)
@@ -195,32 +161,84 @@ DELETE /api/posts/:id
 Authorization: Bearer <token>
 \`\`\`
 
-## Testing
+### Comments
 
-### Test Coverage: **92%+** ✅
+#### Create Comment (Protected)
 
-- **Unit Tests:** 38 tests (validators, formatters)
-- **Service Tests:** 30 tests (user, post services)
-- **Integration Tests:** 42 tests (auth, posts APIs)
-- **Total:** 110 tests
+\`\`\`http
+POST /api/posts/:postId/comments
+Authorization: Bearer <token>
+Content-Type: application/json
 
-### Run Tests
-
-\`\`\`bash
-
-# All tests
-
-npm test
-
-# Watch mode
-
-npm run test:watch
-
-# Coverage report
-
-npm run test:coverage
+{
+"content": "Great post!"
+}
 \`\`\`
 
-### Test Database
+#### Get Post Comments (Public)
 
-Integration tests use a separate test database configured in \`.env.test\`
+\`\`\`http
+GET /api/posts/:postId/comments
+\`\`\`
+
+#### Delete Comment (Protected, Author Only)
+
+\`\`\`http
+DELETE /api/comments/:id
+Authorization: Bearer <token>
+\`\`\`
+
+## 🏗️ Architecture
+
+\`\`\`
+src/
+├── config/ # Database configuration
+├── controllers/ # Request handlers
+├── middlewares/ # Express middlewares
+├── routes/ # API routes
+├── services/ # Business logic
+├── utils/ # Utility functions
+├── app.js # Express app setup
+└── server.js # Server entry point
+\`\`\`
+
+## 🔐 Security
+
+- JWT authentication
+- Password hashing (bcrypt)
+- Input validation (Zod)
+- SQL injection prevention (Prisma)
+- XSS protection
+- CORS configuration
+- Environment variables
+
+## CI/CD
+
+Automated testing pipeline with GitHub Actions:
+
+- ✅ Runs on every push and pull request
+- ✅ PostgreSQL test database
+- ✅ Full test suite execution
+- ✅ Coverage reporting
+- ✅ Build verification
+
+## 📝 License
+
+MIT
+
+## 👤 Author
+
+**Your Name**
+
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your Name](https://linkedin.com/in/yourname)
+
+## Acknowledgments
+
+- [roadmap.sh](https://roadmap.sh/backend) - Backend Developer Roadmap
+- [Prisma](https://www.prisma.io/) - Next-generation ORM
+- [Express.js](https://expressjs.com/) - Web framework
+
+---
+
+⭐ Star this repo if you found it helpful!

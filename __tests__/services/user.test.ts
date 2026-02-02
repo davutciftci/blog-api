@@ -1,29 +1,35 @@
 import { jest } from '@jest/globals';
-import { prismaMock } from '../setup/prisma-mock.js';
+import mockPrisma from '../setup/prisma-mock.js';
 
 const mockHash = jest.fn();
 const mockCompare = jest.fn();
 
+// Mock dependencies BEFORE importing services
 jest.unstable_mockModule('bcrypt', () => ({
+  default: {
+    hash: mockHash,
+    compare: mockCompare,
+  },
   hash: mockHash,
   compare: mockCompare,
 }));
 
-import {
+jest.unstable_mockModule('../../src/config/database.js', () => ({
+  default: mockPrisma,
+}));
+
+// Use dynamic imports for services to ensure they use mocked modules
+const {
   createUser,
   getUserById,
   getUserByEmail,
   updateUser,
   deleteUser,
-} from '../../src/services/user.js';
+} = await import('../../src/services/user.js');
 
 describe('User Service - Simplified', () => {
   
   beforeEach(() => {
-    jest.resetAllMocks();
-  });
-  
-  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -37,18 +43,19 @@ describe('User Service - Simplified', () => {
         updatedAt: new Date()
       };
 
-      (prismaMock.user.findUnique as any).mockResolvedValue(mockUser);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(mockUser);
 
       const result = await getUserById('1');
 
       expect(result).toEqual(mockUser);
-      expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
-        where: { id: '1' }
+      expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: '1' },
+        select: expect.any(Object)
       });
     });
 
     it('should throw error when user not found', async () => {
-      (prismaMock.user.findUnique as any).mockResolvedValue(null);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(null);
 
       await expect(getUserById('999')).rejects.toThrow('User not found');
     });
@@ -65,19 +72,20 @@ describe('User Service - Simplified', () => {
         updatedAt: new Date()
       };
 
-      (prismaMock.user.findUnique as any).mockResolvedValue(mockUser);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(mockUser);
 
       const result = await getUserByEmail('test@example.com');
 
       expect(result).toEqual(mockUser);
       expect(result).toHaveProperty('password');
-      expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
-        where: { email: 'test@example.com' }
+      expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({
+        where: { email: 'test@example.com' },
+        select: expect.any(Object)
       });
     });
 
     it('should return null when user not found', async () => {
-      (prismaMock.user.findUnique as any).mockResolvedValue(null);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(null);
 
       const result = await getUserByEmail('notfound@example.com');
 
@@ -105,20 +113,20 @@ describe('User Service - Simplified', () => {
         updatedAt: new Date()
       };
 
-      (prismaMock.user.findUnique as any).mockResolvedValue(existingUser);
-      (prismaMock.user.update as any).mockResolvedValue(updatedUser);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(existingUser);
+      (mockPrisma.user.update as any).mockResolvedValue(updatedUser);
 
       const result = await updateUser(userId, updateData);
 
       expect(result.name).toBe('Updated Name');
-      expect(prismaMock.user.findUnique).toHaveBeenCalledWith({ 
+      expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({ 
         where: { id: userId } 
       });
-      expect(prismaMock.user.update).toHaveBeenCalledTimes(1);
+      expect(mockPrisma.user.update).toHaveBeenCalledTimes(1);
     });
 
     it('should throw error when user not found', async () => {
-      (prismaMock.user.findUnique as any).mockResolvedValue(null);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(null);
 
       await expect(updateUser('999', { name: 'Test' }))
         .rejects.toThrow('User not found');
@@ -138,21 +146,21 @@ describe('User Service - Simplified', () => {
         updatedAt: new Date()
       };
 
-      (prismaMock.user.findUnique as any).mockResolvedValue(existingUser);
-      (prismaMock.user.delete as any).mockResolvedValue(existingUser);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(existingUser);
+      (mockPrisma.user.delete as any).mockResolvedValue(existingUser);
 
       await deleteUser(userId);
 
-      expect(prismaMock.user.findUnique).toHaveBeenCalledWith({ 
+      expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({ 
         where: { id: userId } 
       });
-      expect(prismaMock.user.delete).toHaveBeenCalledWith({ 
+      expect(mockPrisma.user.delete).toHaveBeenCalledWith({ 
         where: { id: userId } 
       });
     });
 
     it('should throw error when user not found', async () => {
-      (prismaMock.user.findUnique as any).mockResolvedValue(null);
+      (mockPrisma.user.findUnique as any).mockResolvedValue(null);
 
       await expect(deleteUser('999')).rejects.toThrow('User not found');
     });

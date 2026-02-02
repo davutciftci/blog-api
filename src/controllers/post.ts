@@ -50,8 +50,17 @@ export const getAll = async (req: Request, res: Response) => {
   try {
     const { page = '1', limit = '10', published } = req.query;
     
-    const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
-    const take = parseInt(limit as string);
+    const pageNum = parseInt(page as string);
+    const limitNum = parseInt(limit as string);
+
+    if (isNaN(pageNum) || pageNum < 1 || isNaN(limitNum) || limitNum < 1) {
+      return res.status(400).json({
+        error: 'Invalid pagination parameters'
+      });
+    }
+    
+    const skip = (pageNum - 1) * limitNum;
+    const take = limitNum;
 
     const options: any = { skip, take };
     
@@ -76,6 +85,11 @@ export const getAll = async (req: Request, res: Response) => {
 export const getOne = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const idStr = id as string;
+
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idStr)) {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
 
     const post = await getPostById(id as string);
 

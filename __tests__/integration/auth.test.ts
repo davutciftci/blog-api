@@ -5,29 +5,13 @@ import app from '../../src/app.js';
 
 describe('Auth API Integration Tests', () => {
 
-  beforeAll(async () => {
-
-    const dbUrl = process.env.DATABASE_URL;
-    if (!dbUrl || !dbUrl.includes('blog_test')) {
-      throw new Error(
-        'Integration tests require blog_test database. ' +
-        'Current DATABASE_URL: ' + (dbUrl || 'not set')
-      );
-    }
-    console.log('✓ Database connection verified: blog_test');
-  });
-
-  beforeEach(async () => {
-  });
-
-  afterAll(async () => {
-  });
-
+  // Database connection is managed in integration-setup.ts
+  
   describe('POST /api/auth/register', () => {
 
     it('should register a new user with valid data', async () => {
       const userData = {
-        email: 'test@example.com',
+        email: 'register-new-auth@example.com',
         password: 'Test1234',
         name: 'Test User'
       };
@@ -40,14 +24,14 @@ describe('Auth API Integration Tests', () => {
       expect(response.body).toHaveProperty('message', 'User registered successfully');
       expect(response.body).toHaveProperty('user');
       expect(response.body).toHaveProperty('token');
-      expect(response.body.user.email).toBe('test@example.com');
+      expect(response.body.user.email).toBe('register-new-auth@example.com');
       expect(response.body.user.name).toBe('Test User');
       expect(response.body.user).not.toHaveProperty('password');
     });
 
     it('should return 400 for invalid email', async () => {
       const userData = {
-        email: 'invalid-email',
+        email: 'invalid-email-auth',
         password: 'Test1234',
         name: 'Test User'
       };
@@ -57,12 +41,12 @@ describe('Auth API Integration Tests', () => {
         .send(userData)
         .expect(400);
 
-      expect(response.body).toHaveProperty('error', 'Invalid email');
+      expect(response.body).toHaveProperty('error', 'Invalid email format');
     });
 
     it('should return 400 for weak password', async () => {
       const userData = {
-        email: 'test@example.com',
+        email: 'weak-pass-auth-unique@example.com',
         password: 'weak',
         name: 'Test User'
       };
@@ -77,7 +61,7 @@ describe('Auth API Integration Tests', () => {
 
     it('should return 400 for short name', async () => {
       const userData = {
-        email: 'test@example.com',
+        email: 'short-name-auth-unique@example.com',
         password: 'Test1234',
         name: 'T'
       };
@@ -92,7 +76,7 @@ describe('Auth API Integration Tests', () => {
 
     it('should return 409 for duplicate email', async () => {
       const userData = {
-        email: 'duplicate@example.com',
+        email: 'duplicate-auth-unique@example.com',
         password: 'Test1234',
         name: 'Test User'
       };
@@ -115,7 +99,7 @@ describe('Auth API Integration Tests', () => {
       await request(app)
         .post('/api/auth/register')
         .send({
-          email: 'login@example.com',
+          email: 'login-auth-unique@example.com',
           password: 'Test1234',
           name: 'Login User'
         });
@@ -123,7 +107,7 @@ describe('Auth API Integration Tests', () => {
 
     it('should login with correct credentials', async () => {
       const credentials = {
-        email: 'login@example.com',
+        email: 'login-auth-unique@example.com',
         password: 'Test1234'
       };
 
@@ -135,13 +119,13 @@ describe('Auth API Integration Tests', () => {
       expect(response.body).toHaveProperty('message', 'User logged in successfully');
       expect(response.body).toHaveProperty('user');
       expect(response.body).toHaveProperty('token');
-      expect(response.body.user.email).toBe('login@example.com');
+      expect(response.body.user.email).toBe('login-auth-unique@example.com');
       expect(response.body.user).not.toHaveProperty('password');
     });
 
     it('should return 401 for wrong password', async () => {
       const credentials = {
-        email: 'login@example.com',
+        email: 'login-auth-unique@example.com',
         password: 'WrongPassword123'
       };
 
@@ -155,7 +139,7 @@ describe('Auth API Integration Tests', () => {
 
     it('should return 401 for non-existent user', async () => {
       const credentials = {
-        email: 'notfound@example.com',
+        email: 'notfound-auth-unique@example.com',
         password: 'Test1234'
       };
 
@@ -185,7 +169,7 @@ describe('Auth API Integration Tests', () => {
       const registerResponse = await request(app)
         .post('/api/auth/register')
         .send({
-          email: 'profile@example.com',
+          email: 'profile-new-auth-unique@example.com',
           password: 'Test1234',
           name: 'Profile User'
         });
@@ -202,7 +186,7 @@ describe('Auth API Integration Tests', () => {
 
       expect(response.body).toHaveProperty('user');
       expect(response.body.user.id).toBe(userId);
-      expect(response.body.user.email).toBe('profile@example.com');
+      expect(response.body.user.email).toBe('profile-new-auth-unique@example.com');
     });
 
     it('should return 401 without token', async () => {

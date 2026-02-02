@@ -1,8 +1,10 @@
 import { jest } from '@jest/globals';
+console.log('🔍 GLOBAL MOCK: prisma-mock.ts loaded');
 import type { PrismaClient } from '../../src/generated/prisma/index.js';
 
 // Manuel mock oluştur - jest-mock-extended yerine
-export const prismaMock = {
+// Değişken ismi 'mock' ile başlamalıdır (Jest hoisting kuralı)
+export const mockPrisma = {
   user: {
     create: jest.fn(),
     findUnique: jest.fn(),
@@ -45,7 +47,6 @@ export const prismaMock = {
     groupBy: jest.fn(),
     upsert: jest.fn(),
   },
-  // Diğer modellerinizi ekleyin...
   $connect: jest.fn(),
   $disconnect: jest.fn(),
   $executeRaw: jest.fn(),
@@ -55,10 +56,8 @@ export const prismaMock = {
   $transaction: jest.fn(),
 } as unknown as PrismaClient;
 
-// Database module'ü global olarak mock et
-jest.mock('../../src/config/database.ts', () => ({
-  __esModule: true,
-  default: prismaMock,
-}));
+// Geriye dönük uyumluluk için
+export const prismaMock = mockPrisma;
 
-export default prismaMock;
+// Database module'ü global olarak mock etmeyi test dosyaları halletmeli
+export default mockPrisma;

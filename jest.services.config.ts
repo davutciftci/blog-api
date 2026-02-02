@@ -2,13 +2,9 @@ export default {
   preset: 'ts-jest/presets/default-esm',
   extensionsToTreatAsEsm: ['.ts'],
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/setup-env.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      isolatedModules: true
-    }
-  },
+  setupFilesAfterEnv: [
+    '<rootDir>/__tests__/setup/setup-env.ts'
+  ],
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/services/**/*.ts',
@@ -17,7 +13,6 @@ export default {
   testMatch: [
     '**/__tests__/services/**/*.test.ts'
   ],
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/prisma-mock.ts'],
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { useESM: true, isolatedModules: true }]
   },

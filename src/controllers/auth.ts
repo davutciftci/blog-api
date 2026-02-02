@@ -10,7 +10,7 @@ export const register = async (req: Request, res: Response) => {
 
         if(!validateEmail(email)) {
             return res.status(400).json({
-                error: 'Invalid email'
+                error: 'Invalid email format'
             })
         }
         if(!validatePassword(password)) {
@@ -42,9 +42,10 @@ export const register = async (req: Request, res: Response) => {
             user,
             token
         })
-    } catch (error) {
-        if(error instanceof Error && error.message.includes('already exists'))
-            return res.status(309).json({ error: error.message})
+    } catch (error: any) {
+        if(error.message?.includes('already exists') || error.code === 'P2002') {
+            return res.status(409).json({ error: 'User with this email already exists' })
+        }
         
         return res.status(500).json({ error: 'Internal server error'})
     }
@@ -64,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
         const user = await getUserByEmail(email);
 
         if(!user) {
-            return res.status(404).json({
+            return res.status(401).json({
                 error: 'Invalid credentials'
             })
         }
