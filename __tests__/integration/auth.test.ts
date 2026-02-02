@@ -1,22 +1,12 @@
+import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
 
-/**
- * Integration Tests for Auth API
- * 
- * These tests require a running PostgreSQL database.
- * Database connection is configured in .env.test
- * 
- * To run integration tests:
- * 1. Ensure PostgreSQL is running on localhost:5432
- * 2. Ensure blog_test database exists
- * 3. Run: npm run test:integration
- */
 
 describe('Auth API Integration Tests', () => {
 
   beforeAll(async () => {
-    // Verify database is available
+
     const dbUrl = process.env.DATABASE_URL;
     if (!dbUrl || !dbUrl.includes('blog_test')) {
       throw new Error(
@@ -28,14 +18,13 @@ describe('Auth API Integration Tests', () => {
   });
 
   beforeEach(async () => {
-    // Database cleanup would go here
   });
 
   afterAll(async () => {
-    // Cleanup
   });
 
   describe('POST /api/auth/register', () => {
+
     it('should register a new user with valid data', async () => {
       const userData = {
         email: 'test@example.com',
@@ -193,7 +182,6 @@ describe('Auth API Integration Tests', () => {
     let userId: string;
 
     beforeEach(async () => {
-      // Register and login to get token
       const registerResponse = await request(app)
         .post('/api/auth/register')
         .send({

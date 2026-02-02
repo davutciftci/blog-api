@@ -1,0 +1,98 @@
+﻿
+> blog-api@1.0.0 test:integration
+> cross-env NODE_ENV=test jest --config jest.integration.config.ts --runInBand
+
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:20:9)
+
+  console.log
+       Database: blog_test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:21:9)
+
+node.exe : FAIL __test
+s__/integration/posts.
+test.ts
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\Davut\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (FAIL __tes   
+ ts__/integration/    
+posts.test.ts:Str    i
+ng) [], RemoteEx    ce
+ption
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+  ÔùÅ Test suite faile
+d to run
+
+    [96msrc/config/da
+tabase.ts[0m:[93m1[
+0m:[93m9[0m - [91me
+rror[0m[90m TS2305: 
+[0mModule '"@prisma/c
+lient"' has no exporte
+d member 'PrismaClient
+'.
+
+    [7m1[0m import {
+PrismaClient} from "@p
+risma/client";
+    [7m [0m [91m   
+     ~~~~~~~~~~~~[0m
+
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:20:9)
+
+  console.log
+       Database: blog_test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:21:9)
+
+FAIL __tests__/integra
+tion/auth.test.ts
+  ÔùÅ Test suite faile
+d to run
+
+    [96msrc/config/da
+tabase.ts[0m:[93m1[
+0m:[93m9[0m - [91me
+rror[0m[90m TS2305: 
+[0mModule '"@prisma/c
+lient"' has no exporte
+d member 'PrismaClient
+'.
+
+    [7m1[0m import {
+PrismaClient} from "@p
+risma/client";
+    [7m [0m [91m   
+     ~~~~~~~~~~~~[0m
+
+Test Suites: 2 failed,
+ 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.971 s
+Ran all test suites.
+Force exiting Jest: Ha
+ve you considered usin
+g `--detectOpenHandles
+` to detect async oper
+ations that kept runni
+ng after all tests fin
+ished?

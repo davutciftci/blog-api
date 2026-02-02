@@ -1,0 +1,190 @@
+﻿
+> blog-api@1.0.0 test:integration
+> cross-env NODE_ENV=test jest --config jest.integration.config.ts --runInBand
+
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:20:9)
+
+  console.log
+       Database: blog_test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:21:9)
+
+node.exe : FAIL __test
+s__/integration/posts.
+test.ts
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\Davut\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (FAIL __tes   
+ ts__/integration/    
+posts.test.ts:Str    i
+ng) [], RemoteEx    ce
+ption
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+  ÔùÅ Test suite faile
+d to run
+
+    @prisma/client did
+ not initialize yet. P
+lease run "prisma gene
+rate" and try to impor
+t it again.
+
+    [0m [90m 1 |[39
+m [36mimport[39m {[
+33mPrismaClient[39m} 
+[36mfrom[39m [32m"@
+prisma/client"[39m[3
+3m;[39m
+     [90m 2 |[39m
+    [31m[1m>[22m[3
+9m[90m 3 |[39m [36m
+const[39m prisma [33
+m=[39m [36mnew[39m 
+[33mPrismaClient[39m
+({
+     [90m   |[39m   
+             [31m[1m
+^[22m[39m
+     [90m 4 |[39m   
+  log[33m:[39m proce
+ss[33m.[39menv[33m.
+[39m[33mNODE_ENW[39
+m [33m===[39m [32m'
+development'[39m [33
+m?[39m [[32m'query'
+[39m[33m,[39m [32m'
+error'[39m[33m,[39m
+ [32m'warn'[39m] [3
+3m:[39m [[32m'error'
+[39m][33m,[39m
+     [90m 5 |[39m
+     [90m 6 |[39m })
+[33m;[39m[0m
+
+      at new PrismaCli
+ent (node_modules/.pri
+sma/client/default.js:
+43:11)
+      at Object.<anony
+mous> (src/config/data
+base.ts:3:16)
+      at Object.<anony
+mous> (src/services/us
+er.ts:1:1)
+      at Object.<anony
+mous> (src/controllers
+/auth.ts:2:1)
+      at Object.<anony
+mous> (src/routes/auth
+.ts:1:1)
+      at Object.<anony
+mous> (src/app.ts:4:1)
+      at Object.<anony
+mous> (__tests__/integ
+ration/posts.test.ts:2
+:1)
+
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:20:9)
+
+  console.log
+       Database: blog_test
+
+      at Object.<anonymous> (__tests__/setup/integration-setup.ts:21:9)
+
+FAIL __tests__/integra
+tion/auth.test.ts
+  ÔùÅ Test suite faile
+d to run
+
+    @prisma/client did
+ not initialize yet. P
+lease run "prisma gene
+rate" and try to impor
+t it again.
+
+    [0m [90m 1 |[39
+m [36mimport[39m {[
+33mPrismaClient[39m} 
+[36mfrom[39m [32m"@
+prisma/client"[39m[3
+3m;[39m
+     [90m 2 |[39m
+    [31m[1m>[22m[3
+9m[90m 3 |[39m [36m
+const[39m prisma [33
+m=[39m [36mnew[39m 
+[33mPrismaClient[39m
+({
+     [90m   |[39m   
+             [31m[1m
+^[22m[39m
+     [90m 4 |[39m   
+  log[33m:[39m proce
+ss[33m.[39menv[33m.
+[39m[33mNODE_ENW[39
+m [33m===[39m [32m'
+development'[39m [33
+m?[39m [[32m'query'
+[39m[33m,[39m [32m'
+error'[39m[33m,[39m
+ [32m'warn'[39m] [3
+3m:[39m [[32m'error'
+[39m][33m,[39m
+     [90m 5 |[39m
+     [90m 6 |[39m })
+[33m;[39m[0m
+
+      at new PrismaCli
+ent (node_modules/.pri
+sma/client/default.js:
+43:11)
+      at Object.<anony
+mous> (src/config/data
+base.ts:3:16)
+      at Object.<anony
+mous> (src/services/us
+er.ts:1:1)
+      at Object.<anony
+mous> (src/controllers
+/auth.ts:2:1)
+      at Object.<anony
+mous> (src/routes/auth
+.ts:1:1)
+      at Object.<anony
+mous> (src/app.ts:4:1)
+      at Object.<anony
+mous> (__tests__/integ
+ration/auth.test.ts:2:
+1)
+
+Test Suites: 2 failed,
+ 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.224 s
+Ran all test suites.
+Force exiting Jest: Ha
+ve you considered usin
+g `--detectOpenHandles
+` to detect async oper
+ations that kept runni
+ng after all tests fin
+ished?

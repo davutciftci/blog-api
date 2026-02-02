@@ -1,24 +1,13 @@
+import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
-
-/**
- * Integration Tests for Posts API
- * 
- * These tests require a running PostgreSQL database.
- * Database connection is configured in .env.test
- * 
- * To run integration tests:
- * 1. Ensure PostgreSQL is running on localhost:5432
- * 2. Ensure blog_test database exists
- * 3. Run: npm run test:integration
- */
+import { prisma } from '../setup/database-setup.js';
 
 describe('Posts API Integration Tests', () => {
-  let authToken: string;
-  let userId: string;
+  let authToken: string = '';
+  let userId: string = '';
 
   beforeAll(async () => {
-    // Verify database is available
     const dbUrl = process.env.DATABASE_URL;
     if (!dbUrl || !dbUrl.includes('blog_test')) {
       throw new Error(
@@ -27,15 +16,27 @@ describe('Posts API Integration Tests', () => {
       );
     }
     console.log('✓ Database connection verified: blog_test');
-    // Database connection setup
+    
+    const registerResponse = await request(app)
+      .post('/api/auth/register')
+      .send({
+        email: 'test@example.com',
+        password: 'Test1234',
+        name: 'Test User'
+      });
+    
+    if (registerResponse.body.token && registerResponse.body.user) {
+      authToken = registerResponse.body.token;
+      userId = registerResponse.body.user.id;
+    } else {
+      throw new Error('Failed to create test user and obtain token');
+    }
   });
 
   beforeEach(async () => {
-    // Database cleanup would go here
   });
 
   afterAll(async () => {
-    // Cleanup
   });
 
   describe('POST /api/posts', () => {

@@ -63,19 +63,19 @@ export const getPostById = async (id: string) => {
                     name: true,
                     email: true
                 }
-            }
-        },
-        comments : {
-            include : {
-                author: {
-                    select: {
-                        id: true,
-                        name: true
-                    }
-                }
             },
-            orderBy: {
-                createdAt: 'desc'
+            comments : {
+                include : {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                }
             }
         }
     })
@@ -137,11 +137,6 @@ export const getAllPosts = async (options: GetAllPostsOptions = {}) => {
                     name: true,
                     email: true
                 }
-            }
-        },
-        _count: {
-            select: {
-                comments: true
             }
         },
         orderBy: {

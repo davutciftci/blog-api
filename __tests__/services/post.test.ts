@@ -1,4 +1,7 @@
+import { jest } from '@jest/globals';
 import { prismaMock } from '../setup/prisma-mock.js';
+
+// Service'leri import et
 import {
   createPost,
   getPostById,
@@ -9,12 +12,17 @@ import {
   getPostsByAuthor
 } from '../../src/services/post.js';
 
-jest.mock('../../src/config/database.js', () => ({
-  __esModule: true,
-  default: prismaMock
-}));
+describe('Prisma Mock Setup', () => {
+  it('should initialize prisma mock', () => {
+    expect(prismaMock).toBeDefined();
+  });
+});
 
 describe('Post Service', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   describe('createPost', () => {
     it('should create a new post with generated slug', async () => {
@@ -41,8 +49,8 @@ describe('Post Service', () => {
         updatedAt: new Date()
       };
 
-      prismaMock.post.findUnique.mockResolvedValue(null); // No existing slug
-      prismaMock.post.create.mockResolvedValue(mockCreatedPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(null);
+      (prismaMock.post.create as any).mockResolvedValue(mockCreatedPost);
 
       const result = await createPost(authorId, postData);
 
@@ -71,8 +79,8 @@ describe('Post Service', () => {
 
       const existingPost = { id: 'post-1', slug: 'duplicate-title' };
 
-      prismaMock.post.findUnique.mockResolvedValue(existingPost);
-      prismaMock.post.create.mockResolvedValue({
+      (prismaMock.post.findUnique as any).mockResolvedValue(existingPost);
+      (prismaMock.post.create as any).mockResolvedValue({
         ...postData,
         id: 'post-2',
         slug: 'duplicate-title-1234567890',
@@ -93,6 +101,8 @@ describe('Post Service', () => {
         title: 'Test Post',
         slug: 'test-post',
         content: 'Content',
+        published: true,
+        authorId: 'user-1',
         author: {
           id: 'user-1',
           name: 'Test User',
@@ -109,7 +119,7 @@ describe('Post Service', () => {
         updatedAt: new Date()
       };
 
-      prismaMock.post.findUnique.mockResolvedValue(mockPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(mockPost);
 
       const result = await getPostById('post-1');
 
@@ -119,7 +129,7 @@ describe('Post Service', () => {
     });
 
     it('should throw error when post not found', async () => {
-      prismaMock.post.findUnique.mockResolvedValue(null);
+      (prismaMock.post.findUnique as any).mockResolvedValue(null);
 
       await expect(getPostById('non-existent')).rejects.toThrow('Post not found');
     });
@@ -131,18 +141,32 @@ describe('Post Service', () => {
         {
           id: 'post-1',
           title: 'Post 1',
-          author: { id: 'user-1', name: 'User 1' },
-          _count: { comments: 5 }
+          slug: 'post-1',
+          content: 'content1',
+          published: true,
+          authorId: 'user-1',
+          author: { id: 'user-1', name: 'User 1', email: 'user1@test.com', password: 'hash', createdAt: new Date(), updatedAt: new Date() },
+          comments: [],
+          _count: { comments: 5 },
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
         {
           id: 'post-2',
           title: 'Post 2',
-          author: { id: 'user-2', name: 'User 2' },
-          _count: { comments: 2 }
+          slug: 'post-2',
+          content: 'content2',
+          published: true,
+          authorId: 'user-2',
+          author: { id: 'user-2', name: 'User 2', email: 'user2@test.com', password: 'hash', createdAt: new Date(), updatedAt: new Date() },
+          comments: [],
+          _count: { comments: 2 },
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ];
 
-      prismaMock.post.findMany.mockResolvedValue(mockPosts);
+      (prismaMock.post.findMany as any).mockResolvedValue(mockPosts);
 
       const result = await getAllPosts();
 
@@ -151,14 +175,13 @@ describe('Post Service', () => {
         skip: 0,
         take: 10,
         include: expect.any(Object),
-        _count: { select: { comments: true } },
         orderBy: { createdAt: 'desc' }
       });
       expect(result).toEqual(mockPosts);
     });
 
     it('should filter by published status', async () => {
-      prismaMock.post.findMany.mockResolvedValue([]);
+      (prismaMock.post.findMany as any).mockResolvedValue([]);
 
       await getAllPosts({ published: true });
 
@@ -170,7 +193,7 @@ describe('Post Service', () => {
     });
 
     it('should filter by author', async () => {
-      prismaMock.post.findMany.mockResolvedValue([]);
+      (prismaMock.post.findMany as any).mockResolvedValue([]);
 
       await getAllPosts({ authorId: 'user-1' });
 
@@ -188,11 +211,11 @@ describe('Post Service', () => {
       const authorId = 'user-1';
       const updateData = { title: 'Updated Title', content: 'Updated content' };
 
-      const mockPost = { id: postId, authorId, title: 'Old Title' };
+      const mockPost = { id: postId, authorId, title: 'Old Title', slug: 'old-title', content: 'old', published: false, createdAt: new Date(), updatedAt: new Date() };
       const mockUpdatedPost = { ...mockPost, ...updateData, slug: 'updated-title' };
 
-      prismaMock.post.findUnique.mockResolvedValue(mockPost);
-      prismaMock.post.update.mockResolvedValue(mockUpdatedPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(mockPost);
+      (prismaMock.post.update as any).mockResolvedValue(mockUpdatedPost);
 
       const result = await updatePost(postId, authorId, updateData);
 
@@ -201,9 +224,9 @@ describe('Post Service', () => {
     });
 
     it('should throw error when user is not the author', async () => {
-      const mockPost = { id: 'post-1', authorId: 'user-1' };
+      const mockPost = { id: 'post-1', authorId: 'user-1', title: 'Post', slug: 'post', content: 'content', published: false, createdAt: new Date(), updatedAt: new Date() };
 
-      prismaMock.post.findUnique.mockResolvedValue(mockPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(mockPost);
 
       await expect(
         updatePost('post-1', 'user-2', { title: 'Hack' })
@@ -211,7 +234,7 @@ describe('Post Service', () => {
     });
 
     it('should throw error when post not found', async () => {
-      prismaMock.post.findUnique.mockResolvedValue(null);
+      (prismaMock.post.findUnique as any).mockResolvedValue(null);
 
       await expect(
         updatePost('non-existent', 'user-1', {})
@@ -221,10 +244,10 @@ describe('Post Service', () => {
 
   describe('deletePost', () => {
     it('should delete post when user is author', async () => {
-      const mockPost = { id: 'post-1', authorId: 'user-1' };
+      const mockPost = { id: 'post-1', authorId: 'user-1', title: 'Post', slug: 'post', content: 'content', published: false, createdAt: new Date(), updatedAt: new Date() };
 
-      prismaMock.post.findUnique.mockResolvedValue(mockPost);
-      prismaMock.post.delete.mockResolvedValue(mockPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(mockPost);
+      (prismaMock.post.delete as any).mockResolvedValue(mockPost);
 
       const result = await deletePost('post-1', 'user-1');
 
@@ -238,9 +261,9 @@ describe('Post Service', () => {
     });
 
     it('should throw error when user is not the author', async () => {
-      const mockPost = { id: 'post-1', authorId: 'user-1' };
+      const mockPost = { id: 'post-1', authorId: 'user-1', title: 'Post', slug: 'post', content: 'content', published: false, createdAt: new Date(), updatedAt: new Date() };
 
-      prismaMock.post.findUnique.mockResolvedValue(mockPost);
+      (prismaMock.post.findUnique as any).mockResolvedValue(mockPost);
 
       await expect(
         deletePost('post-1', 'user-2')
@@ -253,11 +276,11 @@ describe('Post Service', () => {
   describe('getPostsByAuthor', () => {
     it('should return posts by specific author', async () => {
       const mockPosts = [
-        { id: 'post-1', authorId: 'user-1', title: 'Post 1' },
-        { id: 'post-2', authorId: 'user-1', title: 'Post 2' }
+        { id: 'post-1', authorId: 'user-1', title: 'Post 1', slug: 'post-1', content: 'content1', published: true, author: { id: 'user-1', name: 'User 1', email: 'user1@test.com', password: 'hash', createdAt: new Date(), updatedAt: new Date() }, comments: [], createdAt: new Date(), updatedAt: new Date() },
+        { id: 'post-2', authorId: 'user-1', title: 'Post 2', slug: 'post-2', content: 'content2', published: true, author: { id: 'user-1', name: 'User 1', email: 'user1@test.com', password: 'hash', createdAt: new Date(), updatedAt: new Date() }, comments: [], createdAt: new Date(), updatedAt: new Date() }
       ];
 
-      prismaMock.post.findMany.mockResolvedValue(mockPosts);
+      (prismaMock.post.findMany as any).mockResolvedValue(mockPosts);
 
       const result = await getPostsByAuthor('user-1');
 

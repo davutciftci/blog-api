@@ -1,0 +1,92 @@
+﻿
+> blog-api@1.0.0 test:integration
+> cross-env NODE_ENV=test jest --config jest.integration.config.ts --runInBand
+
+node.exe : FAIL __test
+s__/integration/posts.
+test.ts
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\Davut\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (FAIL __tes   
+ ts__/integration/    
+posts.test.ts:Str    i
+ng) [], RemoteEx    ce
+ption
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+  ÔùÅ Test suite faile
+d to run
+
+    [96m__tests__/set
+up/integration-setup.t
+s[0m:[93m11[0m:[93
+m34[0m - [91merror[
+0m[90m TS1343: [0mTh
+e 'import.meta' meta-p
+roperty is only allowe
+d when the '--module' 
+option is 'es2020', 'e
+s2022', 'esnext', 'sys
+tem', 'node16', 'node1
+8', 'node20', or 'node
+next'.
+
+    [7m11[0m const _
+_filename = fileURLToP
+ath(import.meta.url);
+    [7m  [0m [91m  
+                      
+         ~~~~~~~~~~~[
+0m
+
+FAIL __tests__/integra
+tion/auth.test.ts
+  ÔùÅ Test suite faile
+d to run
+
+    [96m__tests__/set
+up/integration-setup.t
+s[0m:[93m11[0m:[93
+m34[0m - [91merror[
+0m[90m TS1343: [0mTh
+e 'import.meta' meta-p
+roperty is only allowe
+d when the '--module' 
+option is 'es2020', 'e
+s2022', 'esnext', 'sys
+tem', 'node16', 'node1
+8', 'node20', or 'node
+next'.
+
+    [7m11[0m const _
+_filename = fileURLToP
+ath(import.meta.url);
+    [7m  [0m [91m  
+                      
+         ~~~~~~~~~~~[
+0m
+
+Test Suites: 2 failed,
+ 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.718 s
+Ran all test suites.
+Force exiting Jest: Ha
+ve you considered usin
+g `--detectOpenHandles
+` to detect async oper
+ations that kept runni
+ng after all tests fin
+ished?

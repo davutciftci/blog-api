@@ -2,6 +2,13 @@ export default {
   preset: 'ts-jest/presets/default-esm',
   extensionsToTreatAsEsm: ['.ts'],
   testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/setup-env.ts'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+      isolatedModules: true
+    }
+  },
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/services/**/*.ts',

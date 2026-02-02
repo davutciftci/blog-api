@@ -3,6 +3,7 @@
  * Handles database connection and cleanup
  */
 
+import { jest } from '@jest/globals';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,20 +26,9 @@ if (!process.env.DATABASE_URL) {
 console.log('📊 Integration Test Setup: Database URL loaded from .env.test');
 console.log(`   Database: ${process.env.DATABASE_URL.split('/').pop()?.split('?')[0]}`);
 
-// Set test timeout using beforeAll since jest is not available at module level
-beforeAll(() => {
-  jest.setTimeout(60000);
-});
-
 // Handle async errors
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-// Cleanup after all tests
-afterAll(async () => {
-  // Cleanup any remaining connections
-  await new Promise(resolve => setTimeout(resolve, 500));
 });
 
 export {};

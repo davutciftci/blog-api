@@ -1,0 +1,122 @@
+﻿
+> blog-api@1.0.0 test:integration
+> cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config jest.integration.config.ts --runInBand
+
+node.exe : ts-jest[con
+fig] (WARN) 
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\Davut\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ts-jest[co   
+ nfig] (WARN) :Str    
+ing) [], RemoteEx    c
+eption
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+    The "ts-jest" conf
+ig option "isolatedMod
+ules" is deprecated an
+d will be removed in v
+30.0.0. Please use "is
+olatedModules: true" i
+n D:/SoftWare/OnlyJs/B
+ackend/backend-project
+s/blog-api/tsconfig.js
+on instead, see https:
+//www.typescriptlang.o
+rg/tsconfig/#isolatedM
+odules
+  
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at __tests__/setup/integration-setup.ts:25:9
+
+  console.log
+       Database: blog_test
+
+      at __tests__/setup/integration-setup.ts:26:9
+
+FAIL __tests__/integra
+tion/posts.test.ts
+  ÔùÅ Test suite faile
+d to run
+
+    Must use import to
+ load ES Module: D:\So
+ftWare\OnlyJs\Backend\
+backend-projects\blog-
+api\node_modules\.pris
+ma\client\default.js
+
+      at Runtime.requi
+reModule (node_modules
+/jest-runtime/build/in
+dex.js:801:21)
+      at Object.<anony
+mous> (node_modules/@p
+risma/client/default.j
+s:2:6)
+
+
+ReferenceError: You ar
+e trying to `import` a
+ file after the Jest e
+nvironment has been to
+rn down. From __tests_
+_/integration/posts.te
+st.ts.
+  console.log
+    ­şôè Integration Test Setup: Database URL loaded from .env.test
+
+      at __tests__/setup/integration-setup.ts:25:9
+
+  console.log
+       Database: blog_test
+
+      at __tests__/setup/integration-setup.ts:26:9
+
+FAIL __tests__/integra
+tion/auth.test.ts
+  ÔùÅ Test suite faile
+d to run
+
+    Must use import to
+ load ES Module: D:\So
+ftWare\OnlyJs\Backend\
+backend-projects\blog-
+api\node_modules\.pris
+ma\client\default.js
+
+      at Runtime.requi
+reModule (node_modules
+/jest-runtime/build/in
+dex.js:801:21)
+      at Object.<anony
+mous> (node_modules/@p
+risma/client/default.j
+s:2:6)
+
+Test Suites: 2 failed,
+ 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        1.251 s
+Ran all test suites.
+Force exiting Jest: Ha
+ve you considered usin
+g `--detectOpenHandles
+` to detect async oper
+ations that kept runni
+ng after all tests fin
+ished?
