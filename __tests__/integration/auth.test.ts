@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
+import '../setup/integration-setup.js';
 
 
 describe('Auth API Integration Tests', () => {
@@ -173,6 +174,7 @@ describe('Auth API Integration Tests', () => {
           password: 'Test1234',
           name: 'Profile User'
         });
+      expect(registerResponse.status).toBe(201);
 
       authToken = registerResponse.body.token;
       userId = registerResponse.body.user.id;

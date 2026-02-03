@@ -25,6 +25,12 @@ export const register = async (req: Request, res: Response) => {
             })
         }
 
+        if(name.length > 100) {
+            return res.status(400).json({
+                error: 'Name cannot exceed 100 characters'
+            })
+        }
+
         const user = await createUser({ email, password, name});
 
         if (!process.env.JWT_SECRET) {

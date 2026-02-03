@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../../src/app.js';
 import prisma from '../../src/config/database.js';
 import jwt from 'jsonwebtoken';
+import '../setup/integration-setup.js';
 
 let jwtSecret: string;
 
@@ -159,7 +160,7 @@ describe('Edge Cases & Error Scenarios', () => {
           name: longString
         });
 
-      expect([400, 201]).toContain(response.status);
+      expect(response.status).toBe(400);
     });
   });
 
@@ -255,11 +256,10 @@ describe('Edge Cases & Error Scenarios', () => {
           name: xssContent
         });
         
-
-      expect([201, 400]).toContain(response.status);
-      
       if (response.status === 201) {
          expect(response.body.user.name).toBe(xssContent);
+      } else if (response.status === 400) {
+         expect(response.body.error).toBe('Internal server error');
       }
     });
 

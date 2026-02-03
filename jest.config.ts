@@ -12,13 +12,7 @@ export default {
   testMatch: [
     '**/__tests__/**/*.test.ts'
   ],
-  testPathIgnorePatterns: [
-    '__tests__/integration/',
-    '__tests__/services/',
-    '__tests__/controllers/',
-    '__tests__/middlewares/'
-  ],
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/prisma-mock.ts'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/env.ts'],
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { useESM: true }]
   },

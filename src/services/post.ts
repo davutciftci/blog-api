@@ -1,5 +1,5 @@
-import prisma from '../config/database'
-import {slugify} from '../utils/formatters'
+import prisma from '../config/database.js'
+import {slugify} from '../utils/formatters.js'
 
 interface CreatePostData {
     title: string

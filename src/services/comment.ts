@@ -1,7 +1,6 @@
-import prisma from '../config/database'
+import prisma from '../config/database.js';
 
 export const createComment = async (postId: string, authorId: string, content: string) => {
-
     const post = await prisma.post.findUnique({
         where: { id: postId }
     })
@@ -18,11 +17,11 @@ export const createComment = async (postId: string, authorId: string, content: s
         },
         include: {
             author: {
-               select: {
-                   id: true,
-                   name: true,
-                   email: true
-               }
+                select: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
             }
         }
     })
@@ -65,4 +64,33 @@ export const deleteComment = async (id: string, authorId: string) => {
         where: { id }
     })
     return { message: 'Comment deleted successfully', id }
+}
+
+export const updateComment = async (id: string, authorId: string, content: string) => {
+    const comment = await prisma.comment.findUnique({
+        where: { id }
+    })
+
+    if(!comment) {
+        throw new Error('Comment not found')
+    }
+
+    if(comment.authorId !== authorId) {
+        throw new Error('Unauthorized to update this comment')
+    }
+
+    const updatedComment = await prisma.comment.update({
+        where: { id },
+        data: { content },
+        include: {
+            author: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
+            }
+        }
+    })
+    return updatedComment
 }

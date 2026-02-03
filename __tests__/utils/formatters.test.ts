@@ -6,10 +6,7 @@ import { slugify, truncate, capitalize, formatDate } from '../../src/utils/forma
  */
 describe('Formatters', () => {
 
-  /**
-   * URL Slug Oluşturma Testleri (slugify)
-   * Metni URL'de kullanılabilir formata dönüştürür (küçük harf, tire ile ayrılmış).
-   */
+  
   describe('slugify', () => {
     // Başarılı Senaryo: Normal metinleri URL uyumlu slug formatına çevirir.
     it('should convert text to slug', () => {

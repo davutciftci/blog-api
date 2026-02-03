@@ -1,4 +1,4 @@
-import prisma from '../config/database';
+import prisma from '../config/database.js';
 import bcrypt from 'bcrypt';
 
 
@@ -16,33 +16,30 @@ interface UpdateUserData {
 export const createUser = async (userData: CreateUserData) => {
     const {email, password, name} = userData;
 
-    const existingUser = await prisma.user.findUnique({
-        where: { email},
-    });
-
-    if (existingUser) {
-        throw new Error('User with this email already exists')
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-        data: {
-            email,
-            password: hashedPassword,
-            name
-        },
-        select: {
-            id: true,
-            email: true,
-            name: true,
-            createdAt: true,
-            updatedAt: true
+    try {
+        const user = await prisma.user.create({
+            data: {
+                email,
+                password: hashedPassword,
+                name
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        })
+        return user;
+    } catch (error: any) {
+        if (error.code === 'P2002') {
+            throw new Error('User with this email already exists');
         }
-
-    })
-
-    return user;
+        throw error;
+    }
 }
 
 export const getUserById = async (id: string) => {

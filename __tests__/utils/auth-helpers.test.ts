@@ -1,7 +1,4 @@
-/**
- * Auth Controller Unit Test
- * Auth işlevlerini test etmek için validators ve utility fonksiyonlarını kullanıyor
- */
+
 import { validateEmail, validatePassword } from '../../src/utils/validators';
 import { slugify } from '../../src/utils/formatters';
 
@@ -33,10 +30,10 @@ describe('Auth Validation (Controller Helper Functions)', () => {
     });
 
     it('should validate password security requirements', () => {
-      expect(validatePassword('WeakPass')).toBe(false); // No numbers
-      expect(validatePassword('Test1234')).toBe(true);  // Valid
-      expect(validatePassword('Pass123')).toBe(false);  // Too short
-      expect(validatePassword('password123')).toBe(false); // No uppercase
+      expect(validatePassword('WeakPass')).toBe(false); 
+      expect(validatePassword('Test1234')).toBe(true);  
+      expect(validatePassword('Pass123')).toBe(false);  
+      expect(validatePassword('password123')).toBe(false); 
     });
 
     it('should enforce minimum password length of 8 characters', () => {

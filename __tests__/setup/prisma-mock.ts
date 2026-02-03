@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 console.log('🔍 GLOBAL MOCK: prisma-mock.ts loaded');
+
 import type { PrismaClient } from '../../src/generated/prisma/index.js';
 
 // Manuel mock oluştur - jest-mock-extended yerine

@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
 import prisma from '../../src/config/database.js';
+import '../setup/integration-setup.js';
 
 describe('Posts API Integration Tests', () => {
   let authToken: string = '';
@@ -12,7 +13,6 @@ describe('Posts API Integration Tests', () => {
   });
 
   beforeEach(async () => {
-    // Global cleanup handles database reset
     
     const registerResponse = await request(app)
       .post('/api/auth/register')
@@ -21,9 +21,11 @@ describe('Posts API Integration Tests', () => {
         password: 'Test1234',
         name: 'Posts User'
       });
+    expect(registerResponse.status).toBe(201);
     
     authToken = registerResponse.body.token;
     userId = registerResponse.body.user.id;
+    
   });
 
   afterAll(async () => {
@@ -235,6 +237,7 @@ describe('Posts API Integration Tests', () => {
           password: 'Test1234',
           name: 'Other User'
         });
+      expect(otherUserResponse.status).toBe(201);
 
       const otherToken = otherUserResponse.body.token;
 
@@ -270,6 +273,7 @@ describe('Posts API Integration Tests', () => {
         });
 
       postId = response.body.post.id;
+      
     });
 
     it('should delete own post', async () => {
@@ -292,6 +296,7 @@ describe('Posts API Integration Tests', () => {
           password: 'Test1234',
           name: 'Other User'
         });
+      expect(otherUserResponse.status).toBe(201);
 
       const otherToken = otherUserResponse.body.token;
 

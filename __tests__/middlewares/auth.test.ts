@@ -1,17 +1,18 @@
-import { authenticate } from '../../src/middlewares/auth.js';
-import jwt from 'jsonwebtoken';
-import { prismaMock } from '../setup/prisma-mock.js';
+import { jest } from '@jest/globals';
+import mockPrisma from '../setup/prisma-mock.js';
 
-// Mock Prisma
-jest.mock('../../src/config/database.js', () => ({
+// Mock dependencies BEFORE importing services/middlewares
+jest.unstable_mockModule('../../src/config/database.js', () => ({
   __esModule: true,
-  default: prismaMock,
+  default: mockPrisma,
 }));
 
-// Mock user service
-jest.mock('../../src/services/user.js', () => ({
-  getUserById: jest.fn()
-}));
+// Use dynamic imports to ensure they use mocked modules
+const { authenticate } = await import('../../src/middlewares/auth.js');
+const { getUserById } = await import('../../src/services/user.js');
+import jwt from 'jsonwebtoken';
+
+// Use the real service but with mocked Prisma
 
 describe('Auth Middleware - Unit Tests', () => {
   const mockRequest: any = {
@@ -32,11 +33,14 @@ describe('Auth Middleware - Unit Tests', () => {
     it('should validate a valid JWT token', async () => {
       const validToken = jwt.sign(
         { userId: 'user-1', email: 'test@example.com' },
-        process.env.JWT_SECRET || 'test-secret',
+        process.env.JWT_SECRET || 'test-secret-key-for-testing',
         { expiresIn: '7d' }
       );
 
       mockRequest.headers.authorization = `Bearer ${validToken}`;
+      
+      const mockUser = { id: 'user-1', email: 'test@example.com', name: 'Test User' };
+      (mockPrisma.user.findUnique as any).mockResolvedValue(mockUser);
 
       await authenticate(mockRequest, mockResponse, mockNext);
 
