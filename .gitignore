@@ -8,3 +8,12 @@ node_modules
 # Coverage
 coverage/
 .nyc_output/
+
+# Test output
+test-output*.txt
+test_output*.txt
+test-results.txt
+test-check.txt
+test-final.txt
+test-latest.txt
+*.log

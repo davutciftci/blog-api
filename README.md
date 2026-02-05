@@ -222,22 +222,93 @@ Automated testing pipeline with GitHub Actions:
 - ✅ Coverage reporting
 - ✅ Build verification
 
+## 🐳 Docker Setup
+
+### Prerequisites
+- Docker Desktop installed
+- Docker running
+
+### Quick Start with Docker
+
+\`\`\`bash
+# 1. Create Docker network
+docker network create blog-network
+
+# 2. Run PostgreSQL
+docker run --name blog-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=blog_dev \
+  --network blog-network \
+  -p 5432:5432 \
+  -d postgres:15-alpine
+
+# 3. Run migrations (from local)
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/blog_dev" \
+npx prisma migrate deploy
+
+# 4. Build API image
+docker build -t blog-api .
+
+# 5. Run API container
+docker run --name blog-api-container \
+  --network blog-network \
+  -p 3000:3000 \
+  -e DATABASE_URL="postgresql://postgres:postgres@blog-postgres:5432/blog_dev" \
+  -e JWT_SECRET="your-secret-key" \
+  -e NODE_ENV="production" \
+  -d blog-api
+
+# 6. Test API
+curl http://localhost:3000
+\`\`\`
+
+### Stop & Cleanup
+
+\`\`\`bash
+# Stop containers
+docker stop blog-api-container blog-postgres
+
+# Remove containers
+docker rm blog-api-container blog-postgres
+
+# Remove network
+docker network rm blog-network
+
+# Remove image
+docker rmi blog-api
+\`\`\`
+
+### View Logs
+
+\`\`\`bash
+# API logs
+docker logs -f blog-api-container
+
+# PostgreSQL logs
+docker logs -f blog-postgres
+\`\`\`
+
+### Development
+
+For development, use local setup:
+\`\`\`bash
+npm run dev
+\`\`\`
+
+For production, use Docker.
+
 ## 📝 License
 
 MIT
 
 ## 👤 Author
 
-**Your Name**
+**Davut Çiftçi**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourname)
+- GitHub: [@davutciftci](https://github.com/davutciftci)
+- LinkedIn: [@davutciftci](https://linkedin.com/in/davutciftci)
 
-## Acknowledgments
-
-- [roadmap.sh](https://roadmap.sh/backend) - Backend Developer Roadmap
-- [Prisma](https://www.prisma.io/) - Next-generation ORM
-- [Express.js](https://expressjs.com/) - Web framework
 
 ---
 
