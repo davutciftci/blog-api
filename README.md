@@ -307,8 +307,12 @@ MIT
 **Davut Çiftçi**
 
 - GitHub: [@davutciftci](https://github.com/davutciftci)
+<<<<<<< HEAD
 - LinkedIn: [@davutciftci](https://linkedin.com/in/davutciftci)
 
+=======
+- LinkedIn: [Davut Çiftçi](https://linkedin.com/in/davutciftci)
+>>>>>>> docker/initial-setup
 
 ---
 
