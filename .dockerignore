@@ -1,14 +1,53 @@
-node_modules
-npm-debug.log
-.env
-.env.test
-.git
-.gitignore
-README.md
-coverage
-.vscode
-.idea
+**/.git
+**/node_modules
+**/coverage
+**/__tests__
+**/.github
+
+# Environment files
+.env*
+!.env.example
+
+# Development files
+*.dev.js
+*.test.js
+*.spec.js
+
+# Documentation
 *.md
-__tests__
-.github
-src/generated
+!README.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# Docker files (don't copy into image)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+.editorconfig
+.prettierrc*
+.eslintrc*

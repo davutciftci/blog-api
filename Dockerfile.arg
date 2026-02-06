@@ -1,0 +1,52 @@
+# Build arguments example
+ARG NODE_VERSION=18
+FROM node:${NODE_VERSION}-alpine AS base
+
+# Build argument for environment
+ARG BUILD_ENV=production
+
+WORKDIR /app
+
+# ============================================
+# Dependencies Stage
+# ============================================
+FROM base AS dependencies
+
+COPY package*.json ./
+
+# Install based on BUILD_ENV
+RUN if [ "$BUILD_ENV" = "production" ]; then \
+    npm ci --only=production; \
+    else \
+    npm ci; \
+    fi
+
+COPY prisma ./prisma/
+RUN npx prisma generate
+
+# ============================================
+# Production Stage
+# ============================================
+FROM base AS production
+
+# Build info
+ARG BUILD_DATE
+ARG BUILD_VERSION
+LABEL build.date="${BUILD_DATE}"
+LABEL build.version="${BUILD_VERSION}"
+
+ENV NODE_ENV=production
+
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+COPY --from=dependencies --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=dependencies --chown=nodejs:nodejs /app/prisma ./prisma/
+COPY --chown=nodejs:nodejs src ./src/
+COPY --chown=nodejs:nodejs package*.json ./
+
+USER nodejs
+
+EXPOSE 3000
+
+CMD ["node", "src/server.js"]
