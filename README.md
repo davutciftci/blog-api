@@ -222,81 +222,70 @@ Automated testing pipeline with GitHub Actions:
 - ✅ Coverage reporting
 - ✅ Build verification
 
-## 🐳 Docker Setup
+## 🐳 Docker
 
-### Prerequisites
-- Docker Desktop installed
-- Docker running
+### Quick Start
 
-### Quick Start with Docker
+```bash
+# Using docker-compose (recommended)
+docker-compose up -d
 
-\`\`\`bash
-# 1. Create Docker network
-docker network create blog-network
+# View logs
+docker-compose logs -f
 
-# 2. Run PostgreSQL
-docker run --name blog-postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=blog_dev \
-  --network blog-network \
-  -p 5432:5432 \
-  -d postgres:15-alpine
+# Stop
+docker-compose down
+```
 
-# 3. Run migrations (from local)
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/blog_dev" \
-npx prisma migrate deploy
+### Using Manage Script (Windows PowerShell)
 
-# 4. Build API image
-docker build -t blog-api .
+```powershell
+# Start all services
+.\manage.ps1 up
 
-# 5. Run API container
-docker run --name blog-api-container \
-  --network blog-network \
-  -p 3000:3000 \
-  -e DATABASE_URL="postgresql://postgres:postgres@blog-postgres:5432/blog_dev" \
-  -e JWT_SECRET="your-secret-key" \
-  -e NODE_ENV="production" \
-  -d blog-api
+# View logs
+.\manage.ps1 logs
 
-# 6. Test API
-curl http://localhost:3000
-\`\`\`
+# Run migrations
+.\manage.ps1 migrate
 
-### Stop & Cleanup
+# Stop all services
+.\manage.ps1 down
 
-\`\`\`bash
-# Stop containers
-docker stop blog-api-container blog-postgres
+# Clean everything
+.\manage.ps1 clean
+```
 
-# Remove containers
-docker rm blog-api-container blog-postgres
+### Manual Build
 
-# Remove network
-docker network rm blog-network
+```bash
+# Production build
+docker build -t blog-api:latest .
 
-# Remove image
-docker rmi blog-api
-\`\`\`
+# Development build
+docker build -f Dockerfile.dev -t blog-api:dev .
 
-### View Logs
+# With build arguments
+docker build `
+  --build-arg NODE_VERSION=18 `
+  --build-arg BUILD_DATE=$(Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ") `
+  -t blog-api:custom .
+```
 
-\`\`\`bash
-# API logs
-docker logs -f blog-api-container
+### Image Sizes
 
-# PostgreSQL logs
-docker logs -f blog-postgres
-\`\`\`
+| Version                  | Size   | Description                            |
+| ------------------------ | ------ | -------------------------------------- |
+| Production (multi-stage) | ~763MB | Optimized for deployment (Debian Slim) |
+| Development              | ~2GB   | Includes dev tools                     |
 
-### Development
+### Optimizations Applied
 
-For development, use local setup:
-\`\`\`bash
-npm run dev
-\`\`\`
-
-For production, use Docker.
+- ✅ Multi-stage builds
+- ✅ Layer caching
+- ✅ .dockerignore optimization
+- ✅ Health checks
+- ✅ Debian Slim base (Node 18 Slim)
 
 ## 📝 License
 
@@ -307,12 +296,13 @@ MIT
 **Davut Çiftçi**
 
 - GitHub: [@davutciftci](https://github.com/davutciftci)
-<<<<<<< HEAD
+  <<<<<<< HEAD
 - LinkedIn: [@davutciftci](https://linkedin.com/in/davutciftci)
 
 =======
+
 - LinkedIn: [Davut Çiftçi](https://linkedin.com/in/davutciftci)
->>>>>>> docker/initial-setup
+  > > > > > > > docker/initial-setup
 
 ---
 
